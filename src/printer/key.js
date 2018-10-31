@@ -51,6 +51,7 @@ function toKey (data, options) {
   }
 
   const kOrders = _.map(data.details, (v, index) => {
+    console.log('index', index, v.name)
     return {
       '序号': index + 1,
       '类别': v.category_title_1,
@@ -97,10 +98,10 @@ function toKey (data, options) {
 
   let kCIndex = 1
   _.forEach(group, (value) => {
-    _.each(value, v => {
-      // eslint-disable-next-line
-      v['序号'] = kCIndex++
-    })
+    value = _.map(value, v => ({
+      ...v,
+      '序号': kCIndex++
+    }))
 
     kCategory = kCategory.concat(value)
 

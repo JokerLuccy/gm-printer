@@ -108,7 +108,7 @@
   "contents": [
     {
       "type": "table",
-      "dataKey": "category",
+      "dataKey": "",
       "columns": [
         {
           "head": "序号",
