@@ -23,18 +23,17 @@ class Page extends React.Component {
 
     const { width, height } = printerStore.config.page.size
 
-    // -3px 是避免运算误差而溢出
+    // -0.14mm的计算误差,连续打印A4规格120页不出现偏移
     return (
       <div ref={this.ref} className='gm-printer-page' style={{
         boxSizing: 'content-box',
         width: `calc(${width} - ${paddingLeft} - ${paddingRight})`,
-        height: `calc(${height} - ${paddingTop} - ${paddingBottom} - 3px)`,
-        padding: `${paddingTop} ${paddingRight} ${paddingBottom} ${paddingLeft}`,
-        pageBreakAfter: 'always'
+        height: `calc(${height} - ${paddingTop} - ${paddingBottom})`,
+        padding: `${paddingTop} ${paddingRight} ${paddingBottom} ${paddingLeft}`
       }}>
         <div className='gm-printer-page-inner' style={{
           width: `calc(${width} - ${paddingLeft} - ${paddingRight})`,
-          height: `calc(${height} - ${paddingTop} - ${paddingBottom} - 3px)`
+          height: `calc(${height} - ${paddingTop} - ${paddingBottom})`
         }}>
           {children}
         </div>

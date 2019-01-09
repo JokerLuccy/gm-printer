@@ -2,6 +2,7 @@ html,
 body {
   background: whitesmoke;
   font-size: 12px;
+  margin: 0;
 }
 
 .gm-printer {
@@ -11,10 +12,12 @@ body {
 // page
 .gm-printer-page {
   overflow: hidden;
-
-  + .gm-printer-page {
-    page-break-before: always;
-  }
+  //page-break-after: always;
+  //page-break-inside: avoid;
+  //
+  //+ .gm-printer-page {
+  //  page-break-before: always;
+  //}
 
   &-inner {
     position: relative;

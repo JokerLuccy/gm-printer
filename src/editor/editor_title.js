@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import editStore from './store'
 import { observer } from 'mobx-react'
 import { Flex } from 'react-gm'
-import { doPrint } from '../printer'
+import { doBatchPrint } from '../printer'
 import { toJS } from 'mobx'
 import defaultConfig from '../template_config/default_config'
 import { Title } from './component'
@@ -22,10 +22,12 @@ class EditorTitle extends React.Component {
 
   handleTestPrint = () => {
     const { data } = this.props
-    doPrint({
-      config: toJS(editStore.config),
+    const config = toJS(editStore.config)
+    const list = Array(20).fill(true).map(e => ({
+      config,
       data
-    })
+    }))
+    doBatchPrint(list)
   }
 
   render () {
