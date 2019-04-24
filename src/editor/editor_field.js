@@ -4,11 +4,7 @@ import { Flex, Option, Select } from '../components'
 import { observer } from 'mobx-react'
 import editStore from './store'
 import { tableDataKeyList } from '../config'
-import { Fonter, Gap, Line, Position, Separator, Size, TextAlign, ColumnWidth, Textarea, Title } from './component'
-
-const TipInfo = () => <Flex alignCenter className='gm-padding-top-5 gm-text-red'>
-  {i18next.t('说明：请勿修改{}中的内容,避免出现数据异常')}
-</Flex>
+import { Fonter, Gap, Line, Position, Separator, Size, TextAlign, ColumnWidth, Textarea, Title, TipInfo } from './component'
 
 @observer
 class EditorField extends React.Component {
@@ -89,7 +85,7 @@ class EditorField extends React.Component {
             />
           </div>
         )}
-        <TipInfo/>
+        <TipInfo text={i18next.t('说明：请勿修改{}中的内容,避免出现数据异常')}/>
       </div>
     )
   }
@@ -147,7 +143,7 @@ class EditorField extends React.Component {
             </div>
           </div>
         </Flex>
-        <TipInfo/>
+        <TipInfo text={i18next.t('说明：请勿修改{}中的内容,避免出现数据异常')}/>
       </div>
     )
   }

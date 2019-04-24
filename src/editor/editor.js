@@ -11,6 +11,7 @@ import EditorTitle from './editor_title'
 import EditorSelect from './editor_select'
 import EditorField from './editor_field'
 import EditorAddField from './editor_add_field'
+import EditorSpecialTable from './editor_special_table'
 import ContextMenu from './context_menu'
 import { Gap, Title } from './component'
 
@@ -152,6 +153,8 @@ class Editor extends React.Component {
           <EditorField/>
           <Gap height='5px'/>
           <EditorAddField/>
+          <Gap height='5px'/>
+          <EditorSpecialTable/>
         </div>}
 
         <div className='gm-printer-edit-wrap'>

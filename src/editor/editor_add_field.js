@@ -1,7 +1,7 @@
 import i18next from '../../locales'
 import React, { Fragment } from 'react'
 import { Flex } from '../components'
-import { Gap, SubTitle, Title } from './component'
+import { Gap, SubTitle, Title, FieldBtn } from './component'
 import _ from 'lodash'
 import editStore from './store'
 import { observer } from 'mobx-react'
@@ -94,15 +94,6 @@ const tableFields = {
     { key: i18next.t('售后类型'), value: i18next.t('{{列.售后类型}}') }
   ]
 }
-
-const FieldBtn = ({ name, onClick }) => (
-  <Flex alignCenter style={{ width: '50%', margin: '3px 0' }}>
-    <span className='gm-printer-edit-plus-btn' onClick={onClick}>
-      +
-    </span>
-    <span className='gm-padding-left-5'>{name}</span>
-  </Flex>
-)
 
 class FieldList extends React.Component {
   render () {

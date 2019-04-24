@@ -5,23 +5,14 @@ import _ from 'lodash'
 import { dispatchMsg, getBlockName, exchange } from '../util'
 
 class EditStore {
-  @computed
-  get computedPrinterKey () {
-    return _.map(this.config, (v, k) => {
-      if (k === 'page') {
-        return v.type + '_' + v.printDirection + v.size.width + v.size.height
-      } else if (k === 'contents') {
-        return _.map(v, vv => {
-          if (vv.type === 'table') {
-            return vv.columns.length + '_' + vv.className + '_' + vv.dataKey + '_' + vv.subtotal.show
-          } else {
-            return vv.style ? vv.style.height : ''
-          }
-        }).join('_')
-      } else {
-        return v.style ? v.style.height : ''
-      }
-    }).join('_')
+  /* start---------设置采购明细相关--------- */
+  purchaseDefaultDetailCol = {
+    'head': i18next.t('明细'),
+    'headStyle': { 'textAlign': 'center' },
+    'style': { 'textAlign': 'left' },
+    'isSpecialColumn': true,
+    'specialDetailsKey': '__details',
+    'text': i18next.t('{{分拣序号}}*{{商户名}}')
   }
 
   @observable
@@ -139,10 +130,24 @@ class EditStore {
     this.selected = selected
   }
 
-  // 选择区域
-  @action
-  setSelectedRegion (selected) {
-    this.selectedRegion = selected
+  @computed
+  get computedPrinterKey () {
+    return _.map(this.config, (v, k) => {
+      if (k === 'page') {
+        return v.type + '_' + v.printDirection + v.size.width + v.size.height
+      } else if (k === 'contents') {
+        return _.map(v, vv => {
+          if (vv.type === 'table') {
+            const special = vv.specialConfig ? vv.specialConfig.template_text + vv.specialConfig.separator : ''
+            return vv.columns.length + '_' + vv.className + '_' + vv.dataKey + '_' + vv.subtotal.show + '_' + special
+          } else {
+            return vv.style ? vv.style.height : ''
+          }
+        }).join('_')
+      } else {
+        return v.style ? v.style.height : ''
+      }
+    }).join('_')
   }
 
   @action
@@ -212,14 +217,13 @@ class EditStore {
     }
 
     const source = this.computedSelectedSource
-
     const arr = this.selected.split('.')
     if (arr.length === 3) {
-      return source[arr[2]]
+      return source[arr[2]] // 选中contents区域以外的
     } else if (arr.length === 5 && arr[3] === 'block') {
-      return source[arr[4]]
+      return source[arr[4]] // 选中contents区域,返回具体block
     } else if (arr.length === 5 && arr[3] === 'column') {
-      return source[arr[4]]
+      return source[arr[4]] // 选中contents区域,返回表格的column
     }
   }
 
@@ -562,6 +566,13 @@ class EditStore {
     }
   }
 
+  // 选择区域
+  @action
+  setSelectedRegion (selected) {
+    this.selectedRegion = selected
+    console.log(selected)
+  }
+
   @action.bound
   setCounter (field, name) {
     const arr = (name && name.split('.')) || []
@@ -569,7 +580,7 @@ class EditStore {
     let { value } = counter
 
     // 兼容之前版本
-    if (value === undefined) { value = [ 'len' ] }
+    if (value === undefined) { value = ['len'] }
 
     if (_.includes(value, field)) {
       const index = value.indexOf(field)
@@ -585,6 +596,53 @@ class EditStore {
     }
     this.config.contents[arr[2]].style = { height }
   }
+
+  @action.bound
+  setPurchaseTableKey (dataKey) {
+    // 先移除选中项,安全第一
+    this.selected = null
+    this.setTableDataKey(dataKey)
+
+    const arr = this.selectedRegion.split('.')
+    const tableConfig = this.config.contents[arr[2]]
+
+    // 先去掉所有明细列
+    const newCols = tableConfig.columns.filter(o => !o.isSpecialColumn)
+    tableConfig.columns.replace(newCols)
+
+    // 单列-总表最后一列,在columns上修改
+    if (dataKey === 'purchase_last_col') {
+      tableConfig.columns.push(this.purchaseDefaultDetailCol)
+    }
+  }
+
+  @action.bound
+  setSpecialText (value) {
+    const arr = this.selectedRegion.split('.')
+    const tableConfig = this.config.contents[arr[2]]
+
+    tableConfig.specialConfig.template_text = value
+    // 单列-总表最后一列,在columns上修改
+    if (tableConfig.dataKey === 'purchase_last_col') {
+      const specialCol = tableConfig.columns.find(o => o.isSpecialColumn)
+      specialCol.text = value
+    }
+  }
+
+  @action.bound
+  specialTextAddField (fieldText) {
+    const arr = this.selectedRegion.split('.')
+    const tableConfig = this.config.contents[arr[2]]
+
+    tableConfig.specialConfig.template_text += fieldText
+    // 单列-总表最后一列,在columns上修改
+    if (tableConfig.dataKey === 'purchase_last_col') {
+      const specialCol = tableConfig.columns.find(o => o.isSpecialColumn)
+      specialCol.text += fieldText
+    }
+  }
+
+  /* end---------设置采购明细相关--------- */
 }
 
 export default new EditStore()

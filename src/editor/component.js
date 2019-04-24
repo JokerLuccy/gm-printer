@@ -450,6 +450,17 @@ const Title = ({ title, text }) => <Flex alignCenter className='gm-font-16'>
 
 const Gap = ({ width = '100%', height = '3px' }) => <div style={{ width, height }}/>
 
+const FieldBtn = ({ name, onClick }) => (
+  <Flex alignCenter style={{ width: '50%', margin: '3px 0' }}>
+    <span className='gm-printer-edit-plus-btn' onClick={onClick}>
+      +
+    </span>
+    <span className='gm-padding-left-5'>{name}</span>
+  </Flex>
+)
+
+const TipInfo = ({ text }) => <Flex alignCenter className='gm-padding-top-5 gm-text-red'>{text}</Flex>
+
 export {
   Text,
   Textarea,
@@ -466,5 +477,7 @@ export {
   Hr,
   SubTitle,
   Title,
-  Gap
+  Gap,
+  FieldBtn,
+  TipInfo
 }

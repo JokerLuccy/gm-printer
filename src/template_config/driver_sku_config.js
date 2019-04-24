@@ -88,8 +88,10 @@ export default {
       'subtotal': {
         'show': false
       },
-      'specialStyle': {
-        'fontSize': '16px'
+      'specialConfig': {
+        'style': {
+          'fontSize': '16px'
+        }
       },
       'columns': [
         {

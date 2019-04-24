@@ -2,9 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Editor } from '../src'
 // 模板配置
-import config from '../src/template_config/default_config'
+import config from '../src/template_config/purchase_config'
 // 模拟数据
-import mockData from '../src/mock_data/default_data'
+import mockData from '../src/mock_data/purchase_bill_data'
 
 class App extends React.Component {
   constructor (props) {
