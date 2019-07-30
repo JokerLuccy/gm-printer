@@ -147,6 +147,29 @@ class EditorField extends React.Component {
 
         <Gap height='5px'/>
 
+        <Flex alignCenter>
+          <Flex alignCenter>{i18next.t('设置行高')}：</Flex>
+          <input value={editStore.computedTableCustomerRowHeight}
+            onChange={(e) => { editStore.setTableCustomerRowHeight(e.target.value) }}
+            type='number'
+            className='gm-printer-edit-input-custom'/>px
+        </Flex>
+
+        <Gap height='5px'/>
+
+        <Flex alignCenter>
+          <Flex alignCenter>{i18next.t('商品排列')}：</Flex>
+          <Select className='gm-printer-edit-select' value={editStore.computedTableArrange}
+            onChange={editStore.setTableArrange}>
+            <Option value='lateral'>{i18next.t('横向排列')}</Option>
+            <Option value='vertical'>{i18next.t('纵向排列')}</Option>
+          </Select>
+        </Flex>
+
+        <Flex alignCenter className='gm-padding-top-5 gm-text-black'>{i18next.t('说明：商品排列仅适用于双栏商品设置')}</Flex>
+
+        <Gap height='5px'/>
+
         <Flex>
           <Flex>{i18next.t('字段设置')}：</Flex>
           <div>

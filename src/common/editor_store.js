@@ -558,6 +558,54 @@ class EditorStore {
       }
     }
   }
+  // 获得表格自定义行高
+  @computed
+  get computedTableCustomerRowHeight () {
+    if (this.selectedRegion) {
+      const arr = this.selectedRegion.split('.')
+      if (arr.includes('table')) {
+        const height = this.config.contents[arr[2]].customerRowHeight
+        return height === undefined ? 23 : height
+      }
+    }
+  }
+
+  @action.bound
+  setTableCustomerRowHeight (val) {
+    if (this.selectedRegion) {
+      const arr = this.selectedRegion.split('.')
+      if (arr.includes('table')) {
+        this.config.contents[arr[2]] = {
+          ...this.config.contents[arr[2]],
+          customerRowHeight: val
+        }
+      }
+    }
+  }
+
+  // 获得双栏表格排列类型
+  @computed
+  get computedTableArrange () {
+    if (this.selectedRegion) {
+      const arr = this.selectedRegion.split('.')
+      if (arr.includes('table')) {
+        return this.config.contents[arr[2]].arrange || 'lateral'
+      }
+    }
+  }
+
+  @action.bound
+  setTableArrange (val) {
+    if (this.selectedRegion) {
+      const arr = this.selectedRegion.split('.')
+      if (arr.includes('table')) {
+        this.config.contents[arr[2]] = {
+          ...this.config.contents[arr[2]],
+          arrange: val
+        }
+      }
+    }
+  }
 
   @action
   removeContent (name) {

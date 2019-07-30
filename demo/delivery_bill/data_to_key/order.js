@@ -48,7 +48,37 @@ function generateMultiData (list, categoryTotal) {
   if (categoryTotal) {
     multiList.push(categoryTotal)
   }
+  return multiList
+}
 
+function generateMultiData2 (list, categoryTotal) {
+  let multiList = []
+  // 假设skuGroup = [{a: 1}, {a:2}, {a: 3}, {a: 4}], 转化为 [{a:1, a#2:3}, {a:2, a#2: 4}]
+  const skuGroup = list
+
+  let index = 0
+  const len = skuGroup.length
+  const middle = Math.ceil(len / 2)
+
+  while (index < middle) {
+    const sku1 = skuGroup[index]
+    const sku2 = {}
+    _.each(skuGroup[middle + index], (val, key) => {
+      sku2[key + MULTI_SUFFIX] = val
+    })
+
+    multiList.push({
+      ...sku1,
+      ...sku2
+    })
+
+    index += 1
+  }
+
+  if (categoryTotal) {
+    multiList.push(categoryTotal)
+  }
+  console.log(multiList)
   return multiList
 }
 
@@ -132,12 +162,12 @@ function generateSummary (list) {
 }
 
 // 积分表格
-function generateRewardData(list) {
+function generateRewardData (list) {
   return _.map(list, o => ({
     [i18next.t('积分商品名')]: o.sku_name,
     [i18next.t('规格')]: o.sale_unit,
     [i18next.t('兑换数')]: o.quantity,
-    [i18next.t('消耗积分')]: o.total_cost_point,
+    [i18next.t('消耗积分')]: o.total_cost_point
   }))
 }
 
@@ -148,6 +178,7 @@ function generateOrderData (list) {
       [i18next.t('序号')]: index + 1,
       [i18next.t('商品ID')]: v.id,
       [i18next.t('商品名')]: v.real_is_weight && !v.is_weigh ? `*${v.name}` : v.name,
+      [i18next.t('商品名_无星号')]: v.name,
       [i18next.t('类别')]: v.category_title_1,
       [i18next.t('商品二级分类')]: v.category_title_2,
       [i18next.t('商品品类')]: v.pinlei_title,
@@ -252,6 +283,8 @@ function order (data) {
   const kOrders = generateOrderData(skuList)
   /* ----------- 双栏 -------------- */
   const kOrdersMulti = generateMultiData(kOrders)
+  /* ----------- 双栏 (纵向)-------------- */
+  const kOrdersMultiVertical = generateMultiData2(kOrders)
 
   // 按一级分类分组
   const groupByCategory1 = _.groupBy(kOrders, v => v._origin.category_title_1)
@@ -259,6 +292,7 @@ function order (data) {
   /* -------- 分类 和 双栏 + 分类 ------- */
   let kCategory = []
   let kCategoryMulti = []
+  let kCategoryMultiVertical = []
   let index = 1
   _.forEach(groupByCategory1, (value, key) => {
     // 分类小计
@@ -283,6 +317,8 @@ function order (data) {
     kCategory = kCategory.concat(list, categoryTotal)
     /* -------- 双栏 + 分类 ------- */
     kCategoryMulti = kCategoryMulti.concat(generateMultiData(list, categoryTotal))
+    /* -------- 双栏 + 分类（纵向） ------- */
+    kCategoryMultiVertical = kCategoryMultiVertical.concat(generateMultiData2(list, categoryTotal))
   })
 
   return {
@@ -295,8 +331,10 @@ function order (data) {
     _table: {
       orders: kOrders, // 普通
       orders_multi: kOrdersMulti, // 双栏
+      orders_multi_vertical: kOrdersMultiVertical, // 双栏（纵向）
       orders_category: kCategory, // 分类
       orders_category_multi: kCategoryMulti, // 分类 + 双栏
+      orders_category_multi_vertical: kCategoryMultiVertical, // 分类+双栏（纵向）,
       abnormal: generateAbnormalData(data, kOrders), // 异常明细
       reward: generateRewardData(data.reward_sku_list)
     },

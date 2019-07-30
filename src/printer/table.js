@@ -89,7 +89,6 @@ class Table extends React.Component {
   getColumns = () => {
     const { config: { columns, dataKey } } = this.props
     const arr = dataKey.split('_')
-
     const columns1 = columns.map((val, index) => ({ ...val, index }))
     // 多列表格
     if (arr.includes('multi')) {
@@ -108,11 +107,14 @@ class Table extends React.Component {
   }
 
   renderSubtotal = () => {
-    const { config: { dataKey, subtotal: { show, style, fields = [{
+    let { config: { dataKey, arrange, subtotal: { show, style, fields = [{
       name: i18next.t('出库金额'),
       valueField: 'real_item_price'
     }], displayName = false } }, range, printerStore } = this.props
+    dataKey = arrange === 'vertical' && dataKey.includes('multi') ? `${dataKey}_vertical` : dataKey
+
     const tableData = printerStore.data._table[dataKey] || []
+
     // 计算合计
     const sumData = (list, field) => {
       return _.reduce(list, (a, b) => {
@@ -155,15 +157,16 @@ class Table extends React.Component {
   }
 
   renderDefault () {
-    const { config: { dataKey, specialConfig = {} }, name, range, pageIndex, printerStore } = this.props
-    const tableData = printerStore.data._table[dataKey] || []
+    let { config: { dataKey, arrange, specialConfig = {}, customerRowHeight = 23 }, name, range, pageIndex, printerStore } = this.props
+    dataKey = arrange === 'vertical' && dataKey.includes('multi') ? `${dataKey}_vertical` : dataKey
 
+    const tableData = printerStore.data._table[dataKey] || []
     const columns = this.getColumns()
 
     return (
       <table>
         <thead>
-          <tr>
+          <tr style={{ height: `${customerRowHeight}px` }}>
             {_.map(columns, (col, i) => (
               <th
                 key={i}
@@ -191,7 +194,7 @@ class Table extends React.Component {
             const isItemNone = !_.keys(tableData[i]).length
 
             return (
-              <tr style={{ height: '23px' }} key={i}>
+              <tr style={{ height: `${customerRowHeight}px` }} key={i}>
                 {isItemNone
                   ? <td colSpan='99'/>
                   : _.map(columns, (col, j) => {
@@ -230,7 +233,9 @@ class Table extends React.Component {
   }
 
   render () {
-    const { config: { className, dataKey }, name, placeholder, printerStore } = this.props
+    let { config: { className, dataKey, arrange }, name, placeholder, printerStore } = this.props
+    dataKey = arrange === 'vertical' && dataKey.includes('multi') ? `${dataKey}_vertical` : dataKey
+
     const tableData = printerStore.data._table[dataKey] || []
     const active = printerStore.selectedRegion === name
 

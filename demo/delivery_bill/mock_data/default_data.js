@@ -28,12 +28,12 @@ export default {
   'refund_money': 0.0,
   'receive_begin_time': '2018-11-15 06:00',
   'refunds': [],
-  "reward_sku_list":[
+  'reward_sku_list': [
     {
-      "sku_name":"商品名",
-      "sale_unit":"规格",
-      "quantity":111,     //兑换数量
-      "total_cost_point":222333
+      'sku_name': '商品名',
+      'sale_unit': '规格',
+      'quantity': 111, // 兑换数量
+      'total_cost_point': 222333
     }
   ],
   'details': [{
@@ -145,6 +145,39 @@ export default {
     'quantity': 13.0,
     'std_unit_name': i18next.t('斤'),
     'name': i18next.t('长白菜'),
+    'real_is_weight': true,
+    'tax_rate': null,
+    'real_item_price': 0.0,
+    'purchase_station_id': 'T8888',
+    'sale_ratio': 1.0,
+    'is_weigh': false,
+    'id': 'D5555555',
+    'pinlei_title': i18next.t('大白菜'),
+    'salemenu_id': 'S8888',
+    'sale_price': 0.0,
+    'specs': '-',
+    'desc': '测试描述',
+    'std_sale_price': 0.0,
+    'real_weight': 13.0,
+    'category_title_1': i18next.t('蔬菜'),
+    'spu_name': i18next.t('长白菜|八卦'),
+    'remark': '测试商品备注',
+    'category_title_2': i18next.t('甘蓝类'),
+    'org_std_sale_price': 10,
+    'org_item_price': 20,
+    'org_sale_price': 15,
+    'production_time': '2019-4-17',
+    'life_time': '2019-4-19'
+  }, {
+    'outer_id': '',
+    'total_item_price': 0.0,
+    'is_price_timing': true,
+    'sale_unit_name': i18next.t('斤'),
+    'union_dispatch': false,
+    'origin_item_price': 0.0,
+    'quantity': 13.0,
+    'std_unit_name': i18next.t('斤'),
+    'name': i18next.t('菠菜'),
     'real_is_weight': true,
     'tax_rate': null,
     'real_item_price': 0.0,
