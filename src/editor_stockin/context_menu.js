@@ -30,9 +30,10 @@ class ContextMenu extends React.Component {
     const isQuantityActive = keyArr.includes('quantity')
     const isMoneyActive = keyArr.includes('money')
     const isMultiActive = keyArr.includes('multi')
+    const isCategoryActive = keyArr.includes('category')
 
     return (
-      <React.Fragment>
+      <>
         <div
           onClick={this.handleChangeTableDataKey.bind(this, 'multi', name)}
           className={isMultiActive ? 'active' : ''}
@@ -51,7 +52,13 @@ class ContextMenu extends React.Component {
         >
           {i18next.t('入库金额小计')}
         </div>
-      </React.Fragment>
+        <div
+          onClick={this.handleChangeTableDataKey.bind(this, 'category', name)}
+          className={isCategoryActive ? 'active' : ''}
+        >
+          {i18next.t('商品分类')}
+        </div>
+      </>
     )
   }
 
