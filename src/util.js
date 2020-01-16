@@ -33,11 +33,9 @@ function pxToNumber(value) {
   return _.toNumber(value.slice(0, -2))
 }
 
-function getStyleWithDiff(style, diffX, diffY, height) {
+function getStyleWithDiff(style, diffX, diffY, height, domHeight) {
   const newStyle = Object.assign({}, style)
-  console.log('height', height)
-  console.log(height.slice(0, -2))
-  
+
   if (!style.left && style.right) {
     newStyle.right = pxAdd(newStyle.right, -diffX)
   } else {
@@ -58,9 +56,9 @@ function getStyleWithDiff(style, diffX, diffY, height) {
     if (isNegative.test(newStyle.top)) {
       newStyle.top = '0px'
     }
-    if (pxToNumber(style.top) > pxToNumber(height)) {
-      console.log(11111)
-      newStyle.top = height
+    if (pxToNumber(newStyle.top) > pxToNumber(height)) {
+      // 减去传过来的dom高度
+      newStyle.top = `${pxToNumber(height) - domHeight}px`
     }
     console.log('top', newStyle.top)
   }

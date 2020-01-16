@@ -12,6 +12,7 @@ import QrCode from './qrcode'
 class Block extends React.Component {
   constructor(props) {
     super(props)
+    this.ref = React.createRef()
     this.state = {
       clientX: null,
       clientY: null,
@@ -61,20 +62,24 @@ class Block extends React.Component {
     dispatchMsg('gm-printer-select', {
       selected: name
     })
-    console.log('start', clientX, clientY)
   }
 
   handleDragEnd = ({ clientX, clientY }) => {
+    const $dom = this.ref.current
     const { config, blockHeight } = this.props
     const diffX = clientX - this.state.clientX
     const diffY = clientY - this.state.clientY
-    console.log('config', config)
-    const style = getStyleWithDiff(config.style, diffX, diffY, blockHeight)
+    const style = getStyleWithDiff(
+      config.style,
+      diffX,
+      diffY,
+      blockHeight,
+      $dom.offsetHeight
+    )
 
     dispatchMsg('gm-printer-block-style-set', {
       style
     })
-    console.log('end', clientX, clientY)
   }
 
   handleClick = () => {
@@ -181,6 +186,7 @@ class Block extends React.Component {
         onClick={this.handleClick}
         onDoubleClick={this.handleDoubleClick}
         {...rest}
+        ref={this.ref}
       >
         <div
           style={{
@@ -212,7 +218,7 @@ Block.propTypes = {
   name: PropTypes.string.isRequired,
   config: PropTypes.object.isRequired,
   pageIndex: PropTypes.number.isRequired,
-  blockHeight: PropTypes.object.isRequired
+  blockHeight: PropTypes.object.isRequired,
 }
 
 export default Block
