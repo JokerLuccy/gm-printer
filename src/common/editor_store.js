@@ -101,6 +101,7 @@ class EditorStore {
 
   @action
   setPanelHeight(height) {
+    console.log(height)
     this.config[this.insertPanel].style.height = height
   }
 

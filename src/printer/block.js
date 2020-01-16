@@ -61,18 +61,20 @@ class Block extends React.Component {
     dispatchMsg('gm-printer-select', {
       selected: name
     })
+    console.log('start', clientX, clientY)
   }
 
   handleDragEnd = ({ clientX, clientY }) => {
-    const { config } = this.props
+    const { config, blockHeight } = this.props
     const diffX = clientX - this.state.clientX
     const diffY = clientY - this.state.clientY
-
-    const style = getStyleWithDiff(config.style, diffX, diffY)
+    console.log('config', config)
+    const style = getStyleWithDiff(config.style, diffX, diffY, blockHeight)
 
     dispatchMsg('gm-printer-block-style-set', {
       style
     })
+    console.log('end', clientX, clientY)
   }
 
   handleClick = () => {
@@ -209,7 +211,8 @@ class Block extends React.Component {
 Block.propTypes = {
   name: PropTypes.string.isRequired,
   config: PropTypes.object.isRequired,
-  pageIndex: PropTypes.number.isRequired
+  pageIndex: PropTypes.number.isRequired,
+  blockHeight: PropTypes.object.isRequired
 }
 
 export default Block

@@ -97,6 +97,7 @@ class Panel extends React.Component {
             name={getBlockName(name, i)}
             config={block}
             pageIndex={pageIndex}
+            blockHeight={config.style.height}
           />
         ))}
         <div

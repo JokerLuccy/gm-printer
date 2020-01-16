@@ -29,19 +29,40 @@ function pxAdd(origin = '0px', add) {
   return parseInt(~~origin, 10) + add + 'px'
 }
 
-function getStyleWithDiff(style, diffX, diffY) {
-  const newStyle = Object.assign({}, style)
+function pxToNumber(value) {
+  return _.toNumber(value.slice(0, -2))
+}
 
+function getStyleWithDiff(style, diffX, diffY, height) {
+  const newStyle = Object.assign({}, style)
+  console.log('height', height)
+  console.log(height.slice(0, -2))
+  
   if (!style.left && style.right) {
     newStyle.right = pxAdd(newStyle.right, -diffX)
   } else {
     newStyle.left = pxAdd(newStyle.left, diffX)
+    // 判断转换后的left是否为负 为负置为0px 锁定该字段只能在该block里面移动
+    const isNegative = /^-/
+    if (isNegative.test(newStyle.left)) {
+      newStyle.left = '0px'
+    }
   }
 
   if (!style.top && style.bottom) {
     newStyle.bottom = pxAdd(newStyle.bottom, -diffY)
   } else {
     newStyle.top = pxAdd(newStyle.top, diffY)
+    // 判断转换后的top是否为负 为负置为0px 锁定该字段只能在该block里面移动
+    const isNegative = /^-/
+    if (isNegative.test(newStyle.top)) {
+      newStyle.top = '0px'
+    }
+    if (pxToNumber(style.top) > pxToNumber(height)) {
+      console.log(11111)
+      newStyle.top = height
+    }
+    console.log('top', newStyle.top)
   }
 
   return newStyle
