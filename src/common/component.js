@@ -432,12 +432,12 @@ class ImageUploader extends React.Component {
 
     const STATION_URL = {
       reqUrl: '/station/image/upload',
-      imgUrl: 'http://img.guanmai.cn/station_pic'
+      imgUrl: 'http://txshopfile.gxyj.com/station_pic'
     }
 
     const MANAGE_URL = {
       reqUrl: '/gm_account/image/upload',
-      imgUrl: 'http://img.guanmai.cn/report_pic'
+      imgUrl: 'http://txshopfile.gxyj.com/report_pic'
     }
 
     const { hostname } = window.location
